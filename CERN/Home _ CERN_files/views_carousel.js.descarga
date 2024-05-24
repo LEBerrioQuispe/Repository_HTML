@@ -1,0 +1,227 @@
+(function ($, Drupal) {
+  "use strict";
+
+  Drupal.behaviors.UpcomingEvents = {
+    attach: function (context, settings) {
+      /* Upcoming events carousel */
+
+      jQuery(function () {
+        jQuery(
+          ".cern-view-display-block.cern-view-display-upcoming_events .view-content.owl-carousel"
+        ).prepend('<button class="bubbly-button"></button>');
+      });
+
+      var bubblyTimeoutID = null;
+      var animateButton2 = function (item) {
+        //reset animation
+        if (bubblyTimeoutID) {
+          clearTimeout(bubblyTimeoutID);
+        }
+        item.removeClass("animate");
+
+        setTimeout(function () {
+          item.addClass("animate");
+          bubblyTimeoutID = setTimeout(function () {
+            item.removeClass("animate");
+          }, 2000);
+        }, 100);
+      };
+
+      $(
+        ".view.cern-view-display-block.cern-view-display-upcoming_events .view-content"
+      ).each(function () {
+        if ($(this).find(".carousel-cern-item").length > 0) {
+          var owlViews = $(this);
+          owlViews.owlCarousel({
+            loop: false,
+            nav: true,
+            navText: ["", ""],
+            dots: false,
+            merge: true,
+            mouseDrag: false,
+            items: 1,
+            itemElement: "carousel-cern-item",
+            autoHeight: false,
+          });
+          // Apply the theme
+          owlViews.addClass("owl-carousel").addClass("owl-theme");
+          owlViews.on("translate.owl.carousel", function (event) {
+            // var position = $('.owl-dot.active').position().left;
+            owlViews.filter(".owl-dots .owl-dot:first-child span").animate(
+              {
+                //left: position - 5,
+              },
+              200,
+              "linear"
+            );
+          });
+
+          // hidden the inactive slides on moves ending
+          owlViews.on("translated.owl.carousel", function (event) {
+            jQuery(this)
+              .find(".owl-item:not(.active)")
+              .each(function () {
+                jQuery(this).css("opacity", "0");
+              });
+          });
+          owlViews.on("translate.owl.carousel", function (event) {
+            jQuery(this)
+              .find(".owl-item")
+              .each(function () {
+                jQuery(this).css("opacity", "1");
+              });
+            animateButton2(
+              jQuery(this).closest(".owl-carousel").find(".bubbly-button")
+            );
+          });
+
+          /* var maxHeight = 0;
+          var itemHeight = 0; */
+          /* owlViews.find('.views-row').each(function () {
+            maxHeight = ($(this).find(".agenda-box-pattern").height() > maxHeight) ? $(this).height() : maxHeight;
+          });
+          owlViews.find('.views-row').css('height', maxHeight+"px"); */
+          /* jQuery(function(){
+            maxHeight = 0;
+            itemHeight = 0;
+            owlViews.find('.views-row').each(function () {
+              itemHeight = $(this).find(".agenda-box-pattern").height();
+              $(this).addClass("rwerqwrqwe " + itemHeight);
+              maxHeight = (itemHeight > maxHeight) ? $(this).height() : maxHeight;
+            });
+            owlViews.find('.views-row').each(function(){
+              jQuery(this).css('height', maxHeight+"px");
+            });
+          }); */
+        }
+      });
+
+      /* General carousel */
+      $(
+        ".view.cern-view-display-block:not(.cern-view-display-upcoming_events):not(.events-collision) .view-content"
+      ).each(function () {
+        if ($(this).find(".carousel-cern-item").length > 0) {
+          var owlViews = $(this);
+          owlViews.owlCarousel({
+            loop: false,
+            nav: false,
+            merge: true,
+            mouseDrag: false,
+            items: 1,
+            itemElement: "carousel-cern-item",
+            autoHeight: true,
+          });
+          // Apply the theme
+          owlViews.addClass("owl-carousel").addClass("owl-theme");
+          owlViews.on("translate.owl.carousel", function (event) {
+            var position = $(".owl-dot.active").position().left;
+            owlViews.filter(".owl-dots .owl-dot:first-child span").animate(
+              {
+                left: position - 5,
+              },
+              200,
+              "linear"
+            );
+          });
+          // hidden the inactive slides on moves ending
+          owlViews.on("translated.owl.carousel", function (event) {
+            jQuery(this)
+              .find(".owl-item:not(.active)")
+              .each(function () {
+                jQuery(this).css("opacity", "0");
+              });
+          });
+          owlViews.on("translate.owl.carousel", function (event) {
+            jQuery(this)
+              .find(".owl-item")
+              .each(function () {
+                jQuery(this).css("opacity", "1");
+              });
+          });
+
+          var maxHeight = 0;
+          owlViews.find(".views-row").each(function () {
+            maxHeight =
+              $(this).height() > maxHeight ? $(this).height() : maxHeight;
+          });
+          owlViews
+            .find(".views-row")
+            .find("> div")
+            .css("height", maxHeight + "px");
+        }
+      });
+
+      $(function () {
+        setTimeout(function () {
+          jQuery(".view.cern-view-display-block .view-content").each(
+            function () {
+              if (jQuery(this).find(".carousel-cern-item").length > 0) {
+                var owlViews = jQuery(this);
+                owlViews.trigger("refresh.owl.carousel");
+              }
+            }
+          );
+        }, 2500);
+      });
+
+      /* News carousel */
+      /* $('.view.cern-view-display-block.cern-view-display-latest_news_pager .view-content').each(function() {
+        if ($(this).find('.carousel-cern-item').length > 0) {
+          var owlViews = $(this);
+          owlViews.owlCarousel({
+            loop: false,
+            nav: false,
+            merge: true,
+            mouseDrag: false,
+            items: 1,
+            itemElement: 'carousel-cern-item',
+            autoHeight:true
+          });
+          // Apply the theme
+          owlViews.addClass('owl-carousel').addClass('owl-theme');
+          owlViews.on('translate.owl.carousel', function (event) {
+            var position = $('.owl-dot.active').position().left;
+            owlViews.filter('.owl-dots .owl-dot:first-child span').animate({
+              left: position - 5,
+            }, 200, "linear");
+          });
+
+          var maxHeight = 0;
+          owlViews.find('.views-row').each(function () {
+            maxHeight = ($(this).height() > maxHeight) ? $(this).height() : maxHeight;
+          });
+          owlViews.find('.views-row').css('height', maxHeight+"px");
+        }
+      });
+
+      $('.view.cern-view-display-block.cern-view-display-latest_featured_news_pager .view-content').each(function() {
+        if ($(this).find('.carousel-cern-item').length > 0) {
+          var owlViews = $(this);
+          owlViews.owlCarousel({
+            loop: false,
+            nav: false,
+            merge: true,
+            mouseDrag: false,
+            items: 1,
+            itemElement: 'carousel-cern-item',
+            autoHeight:true
+          });
+          // Apply the theme
+          owlViews.addClass('owl-carousel').addClass('owl-theme');
+          owlViews.on('translate.owl.carousel', function (event) {
+            var position = $('.owl-dot.active').position().left;
+            owlViews.filter('.owl-dots .owl-dot:first-child span').animate({
+              left: position - 5,
+            }, 200, "linear");
+          });
+
+          var maxHeight = 0;
+          owlViews.find('.views-row').each(function () {
+            maxHeight = ($(this).height() > maxHeight) ? $(this).height() : maxHeight;
+          });
+          owlViews.find('.views-row').css('height', maxHeight+"px");
+        }
+      }); */
+    },
+  };
+})(jQuery, Drupal);

@@ -1,0 +1,40 @@
+.cookiesjsr-layer {
+  font-size: 1vw;
+  height: 50%;
+  top: 53%;
+}
+@media only screen and (max-width: 991px) {
+  .cookiesjsr-layer {
+    font-size: 1.5vh;
+    width: 80%;
+    height: 57%;
+  }
+  .cookiesjsr-layer .cookiesjsr-layer--label-all {
+    display: none;
+  }
+}
+.cookiesjsr-layer header {
+  background: transparent !important;
+  top: 0 !important;
+}
+.cookiesjsr-layer header .cookiesjsr-layer--close {
+  position: absolute;
+  right: 15px;
+}
+.cookiesjsr-layer footer .cookiesjsr-layer--actions {
+  width: auto;
+}
+
+.cookiesjsr-banner {
+  font-size: 1vw;
+}
+.cookiesjsr-banner button.denyAll {
+  display: block;
+}
+@media only screen and (max-width: 991px) {
+  .cookiesjsr-banner {
+    font-size: 2vh;
+  }
+}
+
+/*# sourceMappingURL=cookies.css.map */

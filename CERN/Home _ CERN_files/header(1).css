@@ -1,0 +1,10 @@
+header
+  .region-header
+  .block-mainnavigation-cern-megamenu
+  .cern-menu-lang-switcher.open
+  ul.dropdown-menu
+  ul.language-switcher-language-url {
+  min-width: 25px;
+}
+
+/*# sourceMappingURL=header.css.map */
